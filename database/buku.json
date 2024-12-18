@@ -1,5 +1,31 @@
 {
     "buku": [
-        
+        {
+            "id_buku": 1,
+            "judul": "Harry Potter",
+            "pengarang": "J.K. Rowling",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2000",
+            "stock": "10",
+            "rak": "A1"
+        },
+        {
+            "id_buku": 2,
+            "judul": "The Lord of The Rings",
+            "pengarang": "J.R.R. Tolkien",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2001",
+            "stock": "5",
+            "rak": "A2"
+        },
+        {
+            "id_buku": 3,
+            "judul": "The Chronicles of Narnia",
+            "pengarang": "C.S. Lewis",
+            "penerbit": "Erlangga",
+            "tahun_terbit": "2002",
+            "stock": "7",
+            "rak": "A3"
+        }
     ]
 }
