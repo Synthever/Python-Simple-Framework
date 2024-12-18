@@ -1,0 +1,26 @@
+{% extends 'home/base.html' %}
+
+{% block content %}
+<h1>Items List</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td>
+                <a href="{{ url_for('edit', id=item.id) }}" class="btn btn-primary btn-sm">Editya</a>
+                <a href="{{ url_for('delete', id=item.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
