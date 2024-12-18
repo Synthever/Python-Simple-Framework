@@ -2,9 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import json
 import os
 from functools import wraps
+import jinja2
 
 app = Flask(__name__, static_folder='public', static_url_path='/static')
-app.secret_key = 'your-secret-key-here'  # Change this in production
+app.secret_key = 'your-secret-key-here'
+app.url_map.strict_slashes = False  # Add this line to handle trailing slashes
 
 JSON_FILE = './database/data.json'
 
@@ -59,40 +61,15 @@ def home():
     items = load_items()
     return render_template('home/index.html', items=items)
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/books')
 @login_required
-def add():
-    if request.method == 'POST':
-        items = load_items()
-        new_item = {
-            'id': len(items) + 1,
-            'name': request.form['name'],
-            'description': request.form['description']
-        }
-        items.append(new_item)
-        save_items(items)
-        return redirect(url_for('home'))
-    return render_template('home/add.html')
+def book_list():
+    return render_template('books/list.html')
 
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+@app.route('/books/add')
 @login_required
-def edit(id):
-    items = load_items()
-    item = next((item for item in items if item['id'] == id), None)
-    if request.method == 'POST':
-        item['name'] = request.form['name']
-        item['description'] = request.form['description']
-        save_items(items)
-        return redirect(url_for('home'))
-    return render_template('home/edit.html', item=item)
-
-@app.route('/delete/<int:id>')
-@login_required
-def delete(id):
-    items = load_items()
-    items = [item for item in items if item['id'] != id]
-    save_items(items)
-    return redirect(url_for('home'))
+def book_add():
+    return render_template('books/add.html')
 
 @app.route('/logout')
 def logout():
