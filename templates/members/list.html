@@ -3,6 +3,7 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
+
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">Data Member</h1>
@@ -10,6 +11,7 @@
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Member
         </a>
     </div>
+
     <p class="mb-4">
         Daftar member yang ada di perpustakaan
     </p>
@@ -22,6 +24,7 @@
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -33,6 +36,7 @@
                             <th>Action</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         {% for m in members %}
                         <tr>
@@ -53,6 +57,7 @@
                         </tr>
                         {% endfor %}
                     </tbody>
+                    
                 </table>
             </div>
         </div>

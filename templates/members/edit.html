@@ -5,21 +5,26 @@
 <div class="container-fluid">
     <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800">Edit Data Member</h1>
+    
     <p class="mb-4">
         Mengubah data member yang ada di perpustakaan
     </p>
 
     <!-- Form Card -->
     <div class="card shadow mb-4">
+
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Edit Data Member</h6>
         </div>
+
         <div class="card-body">
             <form method="POST" action="{{ url_for('member_edit', id=member.id_member) }}">
+
                 <div class="form-group">
                     <label>Nama Member</label>
                     <input type="text" class="form-control" name="name" value="{{ member.nama }}" required>
                 </div>
+
                 <div class="form-group">
                     <label>Gender</label>
                     <select class="form-control" name="gender" required>
@@ -28,6 +33,7 @@
                         <option value="Wanita" {% if member.gender == 'Wanita' %}selected{% endif %}>Wanita</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label>No Telp</label>
                     <input type="number" class="form-control" name="phone" value="{{ member.telp }}" required>
@@ -44,6 +50,7 @@
                     <a href="{{ url_for('member_list') }}" class="btn btn-secondary">Kembali</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
+
             </form>
         </div>
     </div>

@@ -12,6 +12,7 @@ JSON_FILE = './database/auth.json'
 JSON_FILE = './database/buku.json'
 JSON_FILE = './database/member.json'
 
+# Public funtion
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -83,7 +84,6 @@ def save_peminjaman(peminjaman_list):
     with open('./database/peminjaman.json', 'w') as f:
         json.dump({'peminjaman': peminjaman_list}, f, indent=4, ensure_ascii=False)
 
-# Update the calculate_denda function to ensure it returns integer
 def calculate_denda(tanggal_kembali):
     from datetime import datetime
     tanggal_kembali = datetime.strptime(tanggal_kembali, '%Y-%m-%d')
@@ -99,7 +99,6 @@ def is_peminjaman_terlambat(tanggal_kembali):
     today = datetime.now()
     return today > tanggal_kembali
 
-# Add this function after existing helper functions
 def get_days_late(tanggal_kembali):
     from datetime import datetime
     tanggal_kembali = datetime.strptime(tanggal_kembali, '%Y-%m-%d')
@@ -109,6 +108,7 @@ def get_days_late(tanggal_kembali):
         return delta.days
     return 0
 
+# Routes Login
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if 'logged_in' in session:
@@ -131,6 +131,7 @@ def login():
             
     return render_template('auth/index.html')
 
+# Routes Home
 @app.route('/home')
 @login_required
 def home():
@@ -175,15 +176,7 @@ def home():
     # Get books with low stock (less than 3)
     low_stock_books = [book for book in books if int(book['stock']) < 3]
     
-    return render_template('home/index.html',
-                         user=current_user(),
-                         books=books,
-                         members=members,
-                         active_loans=active_loans,
-                         late_loans=late_loans,
-                         total_denda=formatted_total_denda,
-                         recent_loans=recent_loans,
-                         low_stock_books=low_stock_books)
+    return render_template('home/index.html', user=current_user(),books=books,members=members,active_loans=active_loans,late_loans=late_loans,total_denda=formatted_total_denda,recent_loans=recent_loans,low_stock_books=low_stock_books)
 
 # Books
 @app.route('/books')
@@ -252,7 +245,6 @@ def book_delete(id):
     return redirect(url_for('book_list', user=current_user()))
 
 # Member
-
 @app.route('/members')
 @login_required
 def member_list():
@@ -316,6 +308,7 @@ def member_delete(id):
         flash('Member berhasil dihapus!', 'success')
     return redirect(url_for('member_list', user=current_user()))
 
+# Peminjaman
 @app.route('/peminjaman')
 @login_required
 def peminjaman_list():
@@ -431,6 +424,7 @@ def peminjaman_edit(id):
     members = load_members()
     return render_template('peminjaman/edit.html', peminjaman=peminjaman, books=books, members=members, user=current_user())
 
+# API
 @app.route('/api/search/books')
 @login_required
 def search_books():

@@ -2,15 +2,19 @@
 {% block content %}
 
 <div class="container-fluid">
+
     <h1 class="h3 mb-2 text-gray-800">Edit Peminjaman</h1>
     <p class="mb-4">Mengubah data peminjaman buku</p>
 
     <div class="card shadow mb-4">
+
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Form Edit Peminjaman</h6>
         </div>
+
         <div class="card-body">
             <form method="POST" action="{{ url_for('peminjaman_edit', id=peminjaman.id_peminjaman) }}">
+
                 <div class="form-group">
                     <label>Buku</label>
                     <select class="form-control" name="id_buku" required>
@@ -22,6 +26,7 @@
                         {% endfor %}
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label>Member</label>
                     <select class="form-control" name="id_member" required>
@@ -33,14 +38,17 @@
                         {% endfor %}
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label>Tanggal Pinjam</label>
                     <input type="date" class="form-control" name="tanggal_pinjam" value="{{ peminjaman.tanggal_pinjam }}" required>
                 </div>
+
                 <div class="form-group">
                     <label>Tanggal Kembali</label>
                     <input type="date" class="form-control" name="tanggal_kembali" value="{{ peminjaman.tanggal_kembali }}" required>
                 </div>
+
                 <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" name="status" required>
@@ -48,14 +56,17 @@
                         <option value="dikembalikan" {% if peminjaman.status == 'dikembalikan' %}selected{% endif %}>Dikembalikan</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label>Denda</label>
                     <input type="number" class="form-control" name="denda" value="{{ peminjaman.denda }}" readonly>
                 </div>
+
                 <div class="form-group">
                     <a href="{{ url_for('peminjaman_list') }}" class="btn btn-secondary">Kembali</a>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>
+                
             </form>
         </div>
     </div>
