@@ -1,0 +1,74 @@
+{
+    "peminjaman": [
+        {
+            "id_peminjaman": 1,
+            "id_buku": 1,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2021-01-01",
+            "tanggal_kembali": "2021-01-08",
+            "status": "dikembalikan",
+            "denda": 1442000
+        },
+        {
+            "id_peminjaman": 2,
+            "id_buku": 2,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-11-25",
+            "tanggal_kembali": "2024-12-04",
+            "status": "dikembalikan",
+            "denda": 16000
+        },
+        {
+            "id_peminjaman": 3,
+            "id_buku": 4,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-20",
+            "tanggal_kembali": "2024-12-27",
+            "status": "dikembalikan",
+            "denda": 0
+        },
+        {
+            "id_peminjaman": 4,
+            "id_buku": 4,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-20",
+            "tanggal_kembali": "2024-12-27",
+            "status": "dikembalikan",
+            "denda": 0
+        },
+        {
+            "id_peminjaman": 5,
+            "id_buku": 10,
+            "id_member": 2,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-20",
+            "tanggal_kembali": "2024-12-27",
+            "status": "dipinjam",
+            "denda": 0
+        },
+        {
+            "id_peminjaman": 6,
+            "id_buku": 3,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-20",
+            "tanggal_kembali": "2024-12-27",
+            "status": "dipinjam",
+            "denda": 0
+        },
+        {
+            "id_peminjaman": 7,
+            "id_buku": 9,
+            "id_member": 1,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-04",
+            "tanggal_kembali": "2024-12-11",
+            "status": "dipinjam",
+            "denda": 0
+        }
+    ]
+}

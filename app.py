@@ -75,6 +75,40 @@ def current_user():
         'username': session['username'],
     }
 
+def load_peminjaman():
+    with open('./database/peminjaman.json', 'r') as f:
+        return json.load(f)['peminjaman']
+
+def save_peminjaman(peminjaman_list):
+    with open('./database/peminjaman.json', 'w') as f:
+        json.dump({'peminjaman': peminjaman_list}, f, indent=4, ensure_ascii=False)
+
+# Update the calculate_denda function to ensure it returns integer
+def calculate_denda(tanggal_kembali):
+    from datetime import datetime
+    tanggal_kembali = datetime.strptime(tanggal_kembali, '%Y-%m-%d')
+    today = datetime.now()
+    if today > tanggal_kembali:
+        delta = today - tanggal_kembali
+        return int(delta.days * 1000)  # Denda 1000 per hari
+    return 0
+
+def is_peminjaman_terlambat(tanggal_kembali):
+    from datetime import datetime
+    tanggal_kembali = datetime.strptime(tanggal_kembali, '%Y-%m-%d')
+    today = datetime.now()
+    return today > tanggal_kembali
+
+# Add this function after existing helper functions
+def get_days_late(tanggal_kembali):
+    from datetime import datetime
+    tanggal_kembali = datetime.strptime(tanggal_kembali, '%Y-%m-%d')
+    today = datetime.now()
+    if today > tanggal_kembali:
+        delta = today - tanggal_kembali
+        return delta.days
+    return 0
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if 'logged_in' in session:
@@ -89,6 +123,7 @@ def login():
         
         if user:
             session['logged_in'] = True
+            session['user_id'] = user['id_petugas']
             session['username'] = user['username']
             return redirect(url_for('home'))
         else:
@@ -99,7 +134,56 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home/index.html', user=current_user())
+    books = load_books()
+    members = load_members()
+    peminjaman = load_peminjaman()
+    
+    # Get active loans and late loans
+    active_loans = []
+    late_loans = []
+    
+    for p in peminjaman:
+        if p['status'] == 'dipinjam':
+            p['buku'] = get_book_by_id(p['id_buku'])
+            p['member'] = get_member_by_id(p['id_member'])
+            p['denda'] = calculate_denda(p['tanggal_kembali'])
+            p['is_terlambat'] = is_peminjaman_terlambat(p['tanggal_kembali'])
+            p['days_late'] = get_days_late(p['tanggal_kembali'])
+            
+            active_loans.append(p)
+            if p['is_terlambat']:
+                late_loans.append(p)
+    
+    # Sort late loans by days_late descending
+    late_loans.sort(key=lambda x: x['days_late'], reverse=True)
+    
+    # Calculate total denda from all loans (both active and returned)
+    total_denda = sum([calculate_denda(p['tanggal_kembali']) for p in peminjaman])
+    
+    # Format the total denda with thousand separator
+    formatted_total_denda = "{:,}".format(total_denda)
+    
+    # Get recent loans (last 5)
+    recent_loans = peminjaman[-5:]
+    for loan in recent_loans:
+        loan['buku'] = get_book_by_id(loan['id_buku'])
+        loan['member'] = get_member_by_id(loan['id_member'])
+        loan['denda'] = calculate_denda(loan['tanggal_kembali'])
+        if loan['status'] == 'dipinjam':
+            loan['is_terlambat'] = is_peminjaman_terlambat(loan['tanggal_kembali'])
+    
+    # Get books with low stock (less than 3)
+    low_stock_books = [book for book in books if int(book['stock']) < 3]
+    
+    return render_template('home/index.html',
+                         user=current_user(),
+                         books=books,
+                         members=members,
+                         active_loans=active_loans,
+                         late_loans=late_loans,
+                         total_denda=formatted_total_denda,
+                         recent_loans=recent_loans,
+                         low_stock_books=low_stock_books)
 
 # Books
 @app.route('/books')
@@ -231,6 +315,137 @@ def member_delete(id):
         delete_member(id)
         flash('Member berhasil dihapus!', 'success')
     return redirect(url_for('member_list', user=current_user()))
+
+@app.route('/peminjaman')
+@login_required
+def peminjaman_list():
+    peminjaman = load_peminjaman()
+    # Get related data
+    for p in peminjaman:
+        p['buku'] = get_book_by_id(p['id_buku'])
+        p['member'] = get_member_by_id(p['id_member'])
+        if p['status'] == 'dipinjam':
+            p['denda'] = calculate_denda(p['tanggal_kembali'])
+            # Add late status check
+            p['is_terlambat'] = is_peminjaman_terlambat(p['tanggal_kembali'])
+            
+    return render_template('peminjaman/list.html', peminjaman=peminjaman, user=current_user())
+
+@app.route('/peminjaman/add', methods=['GET', 'POST'])
+@login_required
+def peminjaman_add():
+    if request.method == 'POST':
+        book_id = int(request.form['id_buku'])
+        book = get_book_by_id(book_id)
+        
+        # Check if book exists and has stock
+        if not book:
+            flash('Buku tidak ditemukan!', 'error')
+            return redirect(url_for('peminjaman_add'))
+            
+        if int(book['stock']) <= 0:
+            flash('Maaf, stock buku habis!', 'error')
+            return redirect(url_for('peminjaman_add'))
+        
+        from datetime import datetime, timedelta
+        
+        tanggal_pinjam = request.form['tanggal_pinjam']
+        # Calculate return date (+7 days)
+        pinjam_date = datetime.strptime(tanggal_pinjam, '%Y-%m-%d')
+        kembali_date = pinjam_date + timedelta(days=7)
+        
+        peminjaman_list = load_peminjaman()
+        new_peminjaman = {
+            "id_peminjaman": len(peminjaman_list) + 1,
+            "id_buku": book_id,
+            "id_member": int(request.form['id_member']),
+            "id_petugas": session['user_id'],
+            "tanggal_pinjam": tanggal_pinjam,
+            "tanggal_kembali": kembali_date.strftime('%Y-%m-%d'),
+            "status": "dipinjam",
+            "denda": 0
+        }
+        
+        # Update book stock
+        book['stock'] = str(int(book['stock']) - 1)
+        update_book(book_id, book)
+        
+        peminjaman_list.append(new_peminjaman)
+        save_peminjaman(peminjaman_list)
+        
+        flash('Peminjaman berhasil ditambahkan!', 'success')
+        return redirect(url_for('peminjaman_list'))
+    
+    books = load_books()
+    members = load_members()
+    return render_template('peminjaman/add.html', books=books, members=members, user=current_user())
+
+@app.route('/peminjaman/return/<int:id>')
+@login_required
+def peminjaman_return(id):
+    peminjaman_list = load_peminjaman()
+    for p in peminjaman_list:
+        if p['id_peminjaman'] == id:
+            p['status'] = 'dikembalikan'
+            p['denda'] = calculate_denda(p['tanggal_kembali'])
+            
+            # Restore book stock
+            book = get_book_by_id(p['id_buku'])
+            if book:
+                book['stock'] = str(int(book['stock']) + 1)
+                update_book(p['id_buku'], book)
+            break
+            
+    save_peminjaman(peminjaman_list)
+    flash('Buku berhasil dikembalikan!', 'success')
+    return redirect(url_for('peminjaman_list'))
+
+@app.route('/peminjaman/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def peminjaman_edit(id):
+    peminjaman_list = load_peminjaman()
+    peminjaman = next((p for p in peminjaman_list if p['id_peminjaman'] == id), None)
+    
+    if not peminjaman:
+        flash('Data peminjaman tidak ditemukan!', 'error')
+        return redirect(url_for('peminjaman_list'))
+        
+    if request.method == 'POST':
+        for p in peminjaman_list:
+            if p['id_peminjaman'] == id:
+                p['id_buku'] = int(request.form['id_buku'])
+                p['id_member'] = int(request.form['id_member'])
+                p['tanggal_pinjam'] = request.form['tanggal_pinjam']
+                p['tanggal_kembali'] = request.form['tanggal_kembali']
+                p['status'] = request.form['status']
+                # Recalculate denda if status is "dikembalikan"
+                if p['status'] == 'dikembalikan':
+                    p['denda'] = calculate_denda(p['tanggal_kembali'])
+                break
+                
+        save_peminjaman(peminjaman_list)
+        flash('Data peminjaman berhasil diupdate!', 'success')
+        return redirect(url_for('peminjaman_list'))
+    
+    books = load_books()
+    members = load_members()
+    return render_template('peminjaman/edit.html', peminjaman=peminjaman, books=books, members=members, user=current_user())
+
+@app.route('/api/search/books')
+@login_required
+def search_books():
+    query = request.args.get('q', '').lower()
+    books = load_books()
+    results = [b for b in books if query in b['judul'].lower()]
+    return json.dumps(results)
+
+@app.route('/api/search/members')
+@login_required
+def search_members():
+    query = request.args.get('q', '').lower()
+    members = load_members()
+    results = [m for m in members if query in m['nama'].lower()]
+    return json.dumps(results)
 
 @app.route('/logout')
 def logout():

@@ -1,0 +1,26 @@
+<div class="form-group">
+  <label>Buku</label>
+  <select
+    class="form-control selectpicker"
+    name="id_buku"
+    id="bookSelect"
+    data-live-search="true"
+    data-live-search-placeholder="Cari buku..."
+    data-show-subtext="true"
+  >
+    <option value="">Pilih Buku</option>
+    {% for book in books %}
+    <option
+      value="{{ book.id_buku }}"
+      data-tokens="{{ book.judul }} {{ book.pengarang }}"
+      data-subtext="Stok: {{ book.stock }}"
+      data-stock="{{ book.stock }}"
+    >
+      {{ book.judul }}
+    </option>
+    {% endfor %}
+  </select>
+  <div class="alert alert-danger mt-2" id="stockAlert" style="display: none">
+    Maaf, stock buku ini telah habis!
+  </div>
+</div>

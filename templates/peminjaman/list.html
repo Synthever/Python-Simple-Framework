@@ -1,23 +1,18 @@
 {% extends 'home/base.html' %} 
 {% block content %}
 
-<!-- Begin Page Content -->
 <div class="container-fluid">
-    <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-2 text-gray-800">Data Member</h1>
-        <a href="{{ url_for('member_add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Member
+        <h1 class="h3 mb-2 text-gray-800">Data Peminjaman</h1>
+        <a href="{{ url_for('peminjaman_add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Peminjaman
         </a>
     </div>
-    <p class="mb-4">
-        Daftar member yang ada di perpustakaan
-    </p>
+    <p class="mb-4">Daftar peminjaman buku di perpustakaan</p>
 
-    <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tabel Member</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Tabel Peminjaman</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -25,30 +20,46 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nama</th>
-                            <th>Gender</th>
-                            <th>No Telp</th>
-                            <th>Alamat</th>
-                            <th>Email</th>
+                            <th>Judul Buku</th>
+                            <th>Peminjam</th>
+                            <th>Tanggal Pinjam</th>
+                            <th>Tanggal Kembali</th>
+                            <th>Status</th>
+                            <th>Denda</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for m in members %}
+                        {% for p in peminjaman %}
                         <tr>
-                            <td>{{ m.id_member }}</td>
-                            <td>{{ m.nama }}</td>
-                            <td>{{ m.gender }}</td>
-                            <td>{{ m.telp }}</td>
-                            <td>{{ m.alamat }}</td>
-                            <td>{{ m.email }}</td>
+                            <td>{{ p.id_peminjaman }}</td>
+                            <td>{{ p.buku.judul }}</td>
+                            <td>{{ p.member.nama }}</td>
+                            <td>{{ p.tanggal_pinjam }}</td>
+                            <td>{{ p.tanggal_kembali }}</td>
                             <td>
-                                <a href="{{ url_for('member_edit', id=m.id_member) }}" class="btn btn-info btn-sm">
-                                    <i class="fas fa-edit"></i>
+                                {% if p.status == 'dipinjam' %}
+                                    {% if p.is_terlambat %}
+                                    <span class="badge badge-danger">Terlambat</span>
+                                    {% else %}
+                                    <span class="badge badge-warning">Dipinjam</span>
+                                    {% endif %}
+                                {% else %}
+                                <span class="badge badge-success">Dikembalikan</span>
+                                {% endif %}
+                            </td>
+                            <td>Rp {{ p.denda }}</td>
+                            <td>
+                                <a href="{{ url_for('peminjaman_edit', id=p.id_peminjaman) }}" class="btn btn-warning btn-sm">
+                                    <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <a href="{{ url_for('member_delete', id=m.id_member) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
-                                    <i class="fas fa-trash"></i>
+                                {% if p.status == 'dipinjam' %}
+                                <a href="{{ url_for('peminjaman_return', id=p.id_peminjaman) }}" 
+                                    class="btn btn-success btn-sm"
+                                    onclick="return confirm('Kembalikan buku ini?')">
+                                    <i class="fas fa-check"></i> Kembalikan
                                 </a>
+                                {% endif %}
                             </td>
                         </tr>
                         {% endfor %}
@@ -58,6 +69,5 @@
         </div>
     </div>
 </div>
-<!-- /.container-fluid -->
 
 {% endblock %}

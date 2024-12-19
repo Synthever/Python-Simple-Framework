@@ -24,7 +24,7 @@
             "pengarang": "C.S. Lewis",
             "penerbit": "Gramedia",
             "tahun_terbit": "2002",
-            "stock": "7",
+            "stock": "6",
             "rak": "A3"
         },
         {
@@ -33,7 +33,7 @@
             "pengarang": "J.R.R. Tolkien",
             "penerbit": "Gramedia",
             "tahun_terbit": "2003",
-            "stock": "3",
+            "stock": "2",
             "rak": "A4"
         },
         {
@@ -44,6 +44,96 @@
             "tahun_terbit": "2004",
             "stock": "8",
             "rak": "A5"
+        },
+        {
+            "id_buku": 6,
+            "judul": "The Da Vinci Code",
+            "pengarang": "Dan Brown",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2005",
+            "stock": "3",
+            "rak": "A6"
+        },
+        {
+            "id_buku": 7,
+            "judul": "The Alchemist",
+            "pengarang": "Paulo Coelho",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2006",
+            "stock": "6",
+            "rak": "A7"
+        },
+        {
+            "id_buku": 8,
+            "judul": "Atomic Habits",
+            "pengarang": "James Clear",
+            "penerbit": "Penguin Random House",
+            "tahun_terbit": "2018",
+            "stock": "4",
+            "rak": "B1"
+        },
+        {
+            "id_buku": 9,
+            "judul": "Laskar Pelangi",
+            "pengarang": "Andrea Hirata",
+            "penerbit": "Bentang Pustaka",
+            "tahun_terbit": "2005",
+            "stock": "5",
+            "rak": "B2"
+        },
+        {
+            "id_buku": 10,
+            "judul": "Rich Dad Poor Dad",
+            "pengarang": "Robert T. Kiyosaki",
+            "penerbit": "Plata Publishing",
+            "tahun_terbit": "1997",
+            "stock": "2",
+            "rak": "B3"
+        },
+        {
+            "id_buku": 11,
+            "judul": "Sapiens",
+            "pengarang": "Yuval Noah Harari",
+            "penerbit": "Harper",
+            "tahun_terbit": "2011",
+            "stock": "5",
+            "rak": "B4"
+        },
+        {
+            "id_buku": 12,
+            "judul": "Bumi Manusia",
+            "pengarang": "Pramoedya Ananta Toer",
+            "penerbit": "Lentera Dipantara",
+            "tahun_terbit": "1980",
+            "stock": "4",
+            "rak": "B5"
+        },
+        {
+            "id_buku": 13,
+            "judul": "Dilan 1990",
+            "pengarang": "Pidi Baiq",
+            "penerbit": "Pastel Books",
+            "tahun_terbit": "2014",
+            "stock": "7",
+            "rak": "B6"
+        },
+        {
+            "id_buku": 14,
+            "judul": "Think and Grow Rich",
+            "pengarang": "Napoleon Hill",
+            "penerbit": "The Ralston Society",
+            "tahun_terbit": "1937",
+            "stock": "3",
+            "rak": "C1"
+        },
+        {
+            "id_buku": 15,
+            "judul": "The Psychology of Money",
+            "pengarang": "Morgan Housel",
+            "penerbit": "Harriman House",
+            "tahun_terbit": "2020",
+            "stock": "5",
+            "rak": "C2"
         }
     ]
 }
