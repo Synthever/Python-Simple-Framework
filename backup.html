@@ -26,3 +26,76 @@
 </div>
 
 
+<!-- ===================================================================================================== -->
+
+{% extends 'home/base.html' %} 
+{% block content %}
+
+<div class="container-fluid">
+    <h1 class="h3 mb-2 text-gray-800">Tambah Peminjaman</h1>
+    <p class="mb-4">Menambahkan data peminjaman buku</p>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Form Peminjaman</h6>
+        </div>
+        <div class="card-body">
+
+            <form method="POST" action="{{ url_for('peminjaman_add') }}">
+                <div class="form-group">
+                    <label>Buku</label>
+                    <select class="form-control" name="id_buku" id="bookSelect" required>
+                        <option value="">Pilih Buku</option>
+                        {% for book in books %}
+                        <option value="{{ book.id_buku }}" data-stock="{{ book.stock }}">
+                            {{ book.judul }} (Stock: {{ book.stock }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="alert alert-danger mt-2" id="stockAlert" style="display: none;">
+                        Maaf, stock buku ini telah habis!
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Member</label>
+                    <select class="form-control" name="id_member" required>
+                        <option value="">Pilih Member</option>
+                        {% for member in members %}
+                        <option value="{{ member.id_member }}">{{ member.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tanggal Pinjam</label>
+                    <input type="date" class="form-control" name="tanggal_pinjam" required>
+                </div>
+                <div class="form-group">
+                    <a href="{{ url_for('peminjaman_list') }}" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('bookSelect').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const stock = selectedOption.getAttribute('data-stock');
+    const stockAlert = document.getElementById('stockAlert');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (stock && parseInt(stock) <= 0) {
+        stockAlert.style.display = 'block';
+        submitBtn.disabled = true;
+    } else {
+        stockAlert.style.display = 'none';
+        submitBtn.disabled = false;
+    }
+});
+</script>
+
+{% endblock %}
