@@ -69,6 +69,11 @@ def delete_member(member_id):
     members = [member for member in members if member['id_member'] != member_id]
     with open('./database/member.json', 'w') as f:
         json.dump({'member': members}, f, indent=4, ensure_ascii=False)
+        
+def current_user():
+    return {
+        'username': session['username'],
+    }
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -85,7 +90,6 @@ def login():
         if user:
             session['logged_in'] = True
             session['username'] = user['username']
-            session['role'] = user['role']
             return redirect(url_for('home'))
         else:
             return render_template('auth/index.html', error='Invalid username or password')
@@ -95,14 +99,14 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    return render_template('home/index.html')
+    return render_template('home/index.html', user=current_user())
 
 # Books
 @app.route('/books')
 @login_required
 def book_list():
     books = load_books()
-    return render_template('books/list.html', books=books)
+    return render_template('books/list.html', books=books, user=current_user())
 
 @app.route('/books/add', methods=['GET', 'POST'])
 @login_required
@@ -126,7 +130,7 @@ def book_add():
         flash('Buku berhasil ditambahkan!', 'success')
         return redirect(url_for('book_list'))
         
-    return render_template('books/add.html')
+    return render_template('books/add.html', user=current_user())
 
 @app.route('/books/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -150,7 +154,7 @@ def book_edit(id):
         flash('Buku berhasil diupdate!', 'success')
         return redirect(url_for('book_list'))
         
-    return render_template('books/edit.html', book=book)
+    return render_template('books/edit.html', book=book, user=current_user())
 
 @app.route('/books/delete/<int:id>')
 @login_required
@@ -161,7 +165,7 @@ def book_delete(id):
     else:
         delete_book(id)
         flash('Buku berhasil dihapus!', 'success')
-    return redirect(url_for('book_list'))
+    return redirect(url_for('book_list', user=current_user()))
 
 # Member
 
@@ -169,7 +173,7 @@ def book_delete(id):
 @login_required
 def member_list():
     members = load_members()
-    return render_template('members/list.html', members=members)
+    return render_template('members/list.html', members=members, user=current_user())
 
 @app.route('/members/add', methods=['GET', 'POST'])
 @login_required
@@ -192,7 +196,7 @@ def member_add():
         flash('Member berhasil ditambahkan!', 'success')
         return redirect(url_for('member_list'))
         
-    return render_template('members/add.html')
+    return render_template('members/add.html', user=current_user())
 
 @app.route('/members/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -206,15 +210,16 @@ def member_edit(id):
         updated_member = {
             "id_member": id,
             "nama": request.form['name'],
-            "alamat": request.form['address'],
+            "gender": request.form['gender'],
             "telp": request.form['phone'],
+            "alamat": request.form['address'],
             "email": request.form['email']
         }
         update_member(id, updated_member)
         flash('Member berhasil diupdate!', 'success')
         return redirect(url_for('member_list'))
         
-    return render_template('members/edit.html', member=member)
+    return render_template('members/edit.html', member=member, user=current_user())
 
 @app.route('/members/delete/<int:id>')
 @login_required
@@ -225,7 +230,7 @@ def member_delete(id):
     else:
         delete_member(id)
         flash('Member berhasil dihapus!', 'success')
-    return redirect(url_for('member_list'))
+    return redirect(url_for('member_list', user=current_user()))
 
 @app.route('/logout')
 def logout():

@@ -22,10 +22,28 @@
             "id_buku": 3,
             "judul": "The Chronicles of Narnia",
             "pengarang": "C.S. Lewis",
-            "penerbit": "Erlangga",
+            "penerbit": "Gramedia",
             "tahun_terbit": "2002",
             "stock": "7",
             "rak": "A3"
+        },
+        {
+            "id_buku": 4,
+            "judul": "The Hobbit",
+            "pengarang": "J.R.R. Tolkien",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2003",
+            "stock": "3",
+            "rak": "A4"
+        },
+        {
+            "id_buku": 5,
+            "judul": "The Hunger Games",
+            "pengarang": "Suzanne Collins",
+            "penerbit": "Gramedia",
+            "tahun_terbit": "2004",
+            "stock": "8",
+            "rak": "A5"
         }
     ]
 }
