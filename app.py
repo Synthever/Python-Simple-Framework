@@ -9,6 +9,7 @@ app.secret_key = 'your-secret-key-here'
 app.url_map.strict_slashes = False  # Add this line to handle trailing slashes
 
 JSON_FILE = './database/data.json'
+JSON_FILE = './database/buku.json'
 
 def login_required(f):
     @wraps(f)
@@ -32,6 +33,29 @@ def load_items():
 def save_items(items):
     with open(JSON_FILE, 'w') as f:
         json.dump({'items': items}, f, indent=4)
+
+def load_books():
+    with open('./database/buku.json', 'r') as f:
+        return json.load(f)['buku']
+
+def get_book_by_id(book_id):
+    books = load_books()
+    return next((book for book in books if book['id_buku'] == book_id), None)
+
+def update_book(book_id, updated_book):
+    books = load_books()
+    for i, book in enumerate(books):
+        if book['id_buku'] == book_id:
+            books[i] = updated_book
+            break
+    with open('./database/buku.json', 'w') as f:
+        json.dump({'buku': books}, f, indent=4, ensure_ascii=False)
+
+def delete_book(book_id):
+    books = load_books()
+    books = [book for book in books if book['id_buku'] != book_id]
+    with open('./database/buku.json', 'w') as f:
+        json.dump({'buku': books}, f, indent=4, ensure_ascii=False)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -64,12 +88,67 @@ def home():
 @app.route('/books')
 @login_required
 def book_list():
-    return render_template('books/list.html')
+    books = load_books()
+    return render_template('books/list.html', books=books)
 
-@app.route('/books/add')
+@app.route('/books/add', methods=['GET', 'POST'])
 @login_required
 def book_add():
+    if request.method == 'POST':
+        books = load_books()
+        new_book = {
+            "id_buku": len(books) + 1,
+            "judul": request.form['title'],
+            "pengarang": request.form['author'],
+            "penerbit": request.form['publisher'],
+            "tahun_terbit": request.form['year'],
+            "stock": request.form['stock'],
+            "rak": request.form['rack']
+        }
+        books.append(new_book)
+        
+        with open('./database/buku.json', 'w') as f:
+            json.dump({'buku': books}, f, indent=4, ensure_ascii=False)
+            
+        flash('Buku berhasil ditambahkan!', 'success')
+        return redirect(url_for('book_list'))
+        
     return render_template('books/add.html')
+
+@app.route('/books/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def book_edit(id):
+    book = get_book_by_id(id)
+    if not book:
+        flash('Buku tidak ditemukan!', 'error')
+        return redirect(url_for('book_list'))
+        
+    if request.method == 'POST':
+        updated_book = {
+            "id_buku": id,
+            "judul": request.form['title'],
+            "pengarang": request.form['author'],
+            "penerbit": request.form['publisher'],
+            "tahun_terbit": request.form['year'],
+            "stock": request.form['stock'],
+            "rak": request.form['rack']
+        }
+        update_book(id, updated_book)
+        flash('Buku berhasil diupdate!', 'success')
+        return redirect(url_for('book_list'))
+        
+    return render_template('books/edit.html', book=book)
+
+@app.route('/books/delete/<int:id>')
+@login_required
+def book_delete(id):
+    book = get_book_by_id(id)
+    if not book:
+        flash('Buku tidak ditemukan!', 'error')
+    else:
+        delete_book(id)
+        flash('Buku berhasil dihapus!', 'success')
+    return redirect(url_for('book_list'))
 
 @app.route('/logout')
 def logout():

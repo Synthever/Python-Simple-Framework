@@ -26,6 +26,15 @@
             "tahun_terbit": "2002",
             "stock": "7",
             "rak": "A3"
+        },
+        {
+            "id_buku": 4,
+            "judul": "vyvuv",
+            "pengarang": "tvttvt",
+            "penerbit": "vtvvtvtv",
+            "tahun_terbit": "66677",
+            "stock": "67766",
+            "rak": "g yt7"
         }
     ]
 }

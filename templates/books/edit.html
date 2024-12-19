@@ -4,45 +4,45 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tambah Data Buku</h1>
+    <h1 class="h3 mb-2 text-gray-800">Edit Data Buku</h1>
     <p class="mb-4">
-        Menambahkan Daftar buku yang tersedia di perpustakaan
+        Mengubah data buku yang tersedia di perpustakaan
     </p>
 
     <!-- Form Card -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tambah Data Buku</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Edit Data Buku</h6>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url_for('book_add') }}">
+            <form method="POST" action="{{ url_for('book_edit', id=book.id_buku) }}">
                 <div class="form-group">
                     <label>Judul Buku</label>
-                    <input type="text" class="form-control" name="title" required>
+                    <input type="text" class="form-control" name="title" value="{{ book.judul }}" required>
                 </div>
                 <div class="form-group">
                     <label>Pengarang</label>
-                    <input type="text" class="form-control" name="author" required>
+                    <input type="text" class="form-control" name="author" value="{{ book.pengarang }}" required>
                 </div>
                 <div class="form-group">
                     <label>Penerbit</label>
-                    <input type="text" class="form-control" name="publisher" required>
+                    <input type="text" class="form-control" name="publisher" value="{{ book.penerbit }}" required>
                 </div>
                 <div class="form-group">
                     <label>Tahun Terbit</label>
-                    <input type="number" class="form-control" name="year" required>
+                    <input type="number" class="form-control" name="year" value="{{ book.tahun_terbit }}" required>
                 </div>
                 <div class="form-group">
                     <label>Jumlah Stock</label>
-                    <input type="number" class="form-control" name="stock" required>
+                    <input type="number" class="form-control" name="stock" value="{{ book.stock }}" required>
                 </div>
                 <div class="form-group">
                     <label>Rak</label>
-                    <input type="text" class="form-control" name="rack" required>
+                    <input type="text" class="form-control" name="rack" value="{{ book.rak }}" required>
                 </div>
                 <div class="form-group">
                     <a href="{{ url_for('book_list') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>
         </div>
