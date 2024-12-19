@@ -1,0 +1,53 @@
+{% extends 'home/base.html' %} 
+{% block content %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tambah Data Buku</h1>
+    <p class="mb-4">
+        Menambahkan Daftar buku yang tersedia di perpustakaan
+    </p>
+
+    <!-- Form Card -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Tambah Data Buku</h6>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('book_add') }}">
+                <div class="form-group">
+                    <label>Judul Buku</label>
+                    <input type="text" class="form-control" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label>Pengarang</label>
+                    <input type="text" class="form-control" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label>Penerbit</label>
+                    <input type="text" class="form-control" name="publisher" required>
+                </div>
+                <div class="form-group">
+                    <label>Tahun Terbit</label>
+                    <input type="number" class="form-control" name="year" required>
+                </div>
+                <div class="form-group">
+                    <label>Jumlah Stock</label>
+                    <input type="number" class="form-control" name="stock" required>
+                </div>
+                <div class="form-group">
+                    <label>Rak</label>
+                    <input type="text" class="form-control" name="rack" required>
+                </div>
+                <div class="form-group">
+                    <a href="{{ url_for('book_list') }}" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+
+{% endblock %}

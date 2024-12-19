@@ -8,8 +8,9 @@ app = Flask(__name__, static_folder='public', static_url_path='/static')
 app.secret_key = 'your-secret-key-here'
 app.url_map.strict_slashes = False  # Add this line to handle trailing slashes
 
-JSON_FILE = './database/data.json'
+JSON_FILE = './database/auth.json'
 JSON_FILE = './database/buku.json'
+JSON_FILE = './database/member.json'
 
 def login_required(f):
     @wraps(f)
@@ -37,6 +38,10 @@ def save_items(items):
 def load_books():
     with open('./database/buku.json', 'r') as f:
         return json.load(f)['buku']
+    
+def load_members():
+    with open('./database/member.json', 'r') as f:
+        return json.load(f)['member']
 
 def get_book_by_id(book_id):
     books = load_books()
@@ -85,6 +90,7 @@ def home():
     items = load_items()
     return render_template('home/index.html', items=items)
 
+# Books
 @app.route('/books')
 @login_required
 def book_list():
@@ -149,6 +155,14 @@ def book_delete(id):
         delete_book(id)
         flash('Buku berhasil dihapus!', 'success')
     return redirect(url_for('book_list'))
+
+# Member
+
+@app.route('/members')
+@login_required
+def member_list():
+    members = load_members()
+    return render_template('members/list.html', members=members)
 
 @app.route('/logout')
 def logout():
