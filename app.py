@@ -24,17 +24,6 @@ def load_users():
     with open('./database/auth.json', 'r') as f:
         return json.load(f)['data']
 
-def load_items():
-    if os.path.exists(JSON_FILE):
-        with open(JSON_FILE, 'r') as f:
-            data = json.load(f)
-            return data.get('items', [])
-    return []
-
-def save_items(items):
-    with open(JSON_FILE, 'w') as f:
-        json.dump({'items': items}, f, indent=4)
-
 def load_books():
     with open('./database/buku.json', 'r') as f:
         return json.load(f)['buku']
@@ -61,6 +50,25 @@ def delete_book(book_id):
     books = [book for book in books if book['id_buku'] != book_id]
     with open('./database/buku.json', 'w') as f:
         json.dump({'buku': books}, f, indent=4, ensure_ascii=False)
+        
+def get_member_by_id(member_id):
+    members = load_members()
+    return next((member for member in members if member['id_member'] == member_id), None)
+
+def update_member(member_id, updated_member):
+    members = load_members()
+    for i, member in enumerate(members):
+        if member['id_member'] == member_id:
+            members[i] = updated_member
+            break
+    with open('./database/member.json', 'w') as f:
+        json.dump({'member': members}, f, indent=4, ensure_ascii=False)
+        
+def delete_member(member_id):
+    members = load_members()
+    members = [member for member in members if member['id_member'] != member_id]
+    with open('./database/member.json', 'w') as f:
+        json.dump({'member': members}, f, indent=4, ensure_ascii=False)
 
 @app.route('/', methods=['GET', 'POST'])
 def login():
@@ -87,8 +95,7 @@ def login():
 @app.route('/home')
 @login_required
 def home():
-    items = load_items()
-    return render_template('home/index.html', items=items)
+    return render_template('home/index.html')
 
 # Books
 @app.route('/books')
@@ -163,6 +170,62 @@ def book_delete(id):
 def member_list():
     members = load_members()
     return render_template('members/list.html', members=members)
+
+@app.route('/members/add', methods=['GET', 'POST'])
+@login_required
+def member_add():
+    if request.method == 'POST':
+        members = load_members()
+        new_member = {
+            "id_member": len(members) + 1,
+            "nama": request.form['name'],
+            "gender": request.form['gender'],
+            "telp": request.form['phone'],
+            "alamat": request.form['address'],
+            "email": request.form['email']
+        }
+        members.append(new_member)
+        
+        with open('./database/member.json', 'w') as f:
+            json.dump({'member': members}, f, indent=4, ensure_ascii=False)
+            
+        flash('Member berhasil ditambahkan!', 'success')
+        return redirect(url_for('member_list'))
+        
+    return render_template('members/add.html')
+
+@app.route('/members/edit/<int:id>', methods=['GET', 'POST'])
+@login_required
+def member_edit(id):
+    member = get_member_by_id(id)
+    if not member:
+        flash('Member tidak ditemukan!', 'error')
+        return redirect(url_for('member_list'))
+        
+    if request.method == 'POST':
+        updated_member = {
+            "id_member": id,
+            "nama": request.form['name'],
+            "alamat": request.form['address'],
+            "telp": request.form['phone'],
+            "email": request.form['email']
+        }
+        update_member(id, updated_member)
+        flash('Member berhasil diupdate!', 'success')
+        return redirect(url_for('member_list'))
+        
+    return render_template('members/edit.html', member=member)
+
+@app.route('/members/delete/<int:id>')
+@login_required
+def member_delete(id):
+    member = get_member_by_id(id)
+    if not member:
+        flash('Member tidak ditemukan!', 'error')
+    else:
+        delete_member(id)
+        flash('Member berhasil dihapus!', 'success')
+    return redirect(url_for('member_list'))
 
 @app.route('/logout')
 def logout():

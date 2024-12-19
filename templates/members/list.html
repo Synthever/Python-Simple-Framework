@@ -6,7 +6,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-2 text-gray-800">Data Member</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+        <a href="{{ url_for('member_add') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-plus fa-sm text-white-50"></i> Tambah Member
         </a>
     </div>
@@ -45,7 +45,7 @@
                                 <a href="#" class="btn btn-info btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ url_for('delete', id=item.id) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="{{ url_for('member_delete', id=m.id_member) }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}

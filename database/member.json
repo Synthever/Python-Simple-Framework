@@ -1,12 +1,20 @@
 {
     "member": [
         {
-        "id_member": 1,
-        "nama": "Dania Brigita Chandra Kirana",
-        "gender": "Perempuan",
-        "telp": "081234567890",
-        "alamat": "Kalasan",
-        "email": "daniabrigita25@students.amikom.ac.id"
+            "id_member": 1,
+            "nama": "Dania Brigita Chandra Kirana",
+            "gender": "Perempuan",
+            "telp": "081234567890",
+            "alamat": "Kalasan",
+            "email": "daniabrigita25@students.amikom.ac.id"
+        },
+        {
+            "id_member": 2,
+            "nama": "ADAUDOAODo",
+            "gender": "Laki-laki",
+            "telp": "093819313871",
+            "alamat": "gdiagdiygadyaidy",
+            "email": "duaidbaiydbiu@gmail.com"
         }
     ]
 }

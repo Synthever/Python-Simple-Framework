@@ -4,46 +4,44 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Tambah Data Buku</h1>
+    <h1 class="h3 mb-2 text-gray-800">Tambah Data Member</h1>
     <p class="mb-4">
-        Menambahkan Daftar buku yang tersedia di perpustakaan
+        Menambahkan Data Member yang ada di perpustakaan
     </p>
 
     <!-- Form Card -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tambah Data Buku</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Tambah Data Member</h6>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ url_for('book_add') }}">
+            <form method="POST" action="{{ url_for('member_add') }}">
                 <div class="form-group">
-                    <label>Judul Buku</label>
-                    <input type="text" class="form-control" name="title" required>
+                    <label>Nama Member</label>
+                    <input type="text" class="form-control" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label>Pengarang</label>
-                    <input type="text" class="form-control" name="author" required>
+                    <label>Gender</label>
+                    <select class="form-control" name="gender" required>
+                        <option value="">Pilih Gender</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Wanita">Wanita</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>Penerbit</label>
-                    <input type="text" class="form-control" name="publisher" required>
+                    <label>No Telp</label>
+                    <input type="number" class="form-control" name="phone" required>
                 </div>
                 <div class="form-group">
-                    <label>Tahun Terbit</label>
-                    <input type="number" class="form-control" name="year" required>
+                    <label>Alamat</label>
+                    <textarea class="form-control" name="address" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Jumlah Stock</label>
-                    <input type="number" class="form-control" name="stock" required>
+                    <label>Email</label>
+                    <input type="email" class="form-control" name="email" required>
                 </div>
-                <div class="form-group">
-                    <label>Rak</label>
-                    <input type="text" class="form-control" name="rack" required>
-                </div>
-                <div class="form-group">
-                    <a href="{{ url_for('book_list') }}" class="btn btn-secondary">Kembali</a>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
