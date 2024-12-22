@@ -31,7 +31,9 @@
                 </div>
                 <div class="form-group">
                     <label>Tahun Terbit</label>
-                    <input type="number" class="form-control" name="year" required>
+                    <input type="number" class="form-control" name="year" required 
+                           oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                           min="1900" max="2100">
                 </div>
                 <div class="form-group">
                     <label>Jumlah Stock</label>

@@ -134,6 +134,15 @@
             "tahun_terbit": "2020",
             "stock": "5",
             "rak": "C2"
+        },
+        {
+            "id_buku": 16,
+            "judul": "The Pragmatic Programmer: Your Journey to Mastery",
+            "pengarang": "Andrew Hunt, David Thomas",
+            "penerbit": "Addison-Wesley Professional",
+            "tahun_terbit": "2019",
+            "stock": "7",
+            "rak": "D1"
         }
     ]
 }
