@@ -82,15 +82,6 @@
             "rak": "B2"
         },
         {
-            "id_buku": 10,
-            "judul": "Rich Dad Poor Dad",
-            "pengarang": "Robert T. Kiyosaki",
-            "penerbit": "Plata Publishing",
-            "tahun_terbit": "1997",
-            "stock": "2",
-            "rak": "B3"
-        },
-        {
             "id_buku": 11,
             "judul": "Sapiens",
             "pengarang": "Yuval Noah Harari",
@@ -141,7 +132,7 @@
             "pengarang": "Andrew Hunt, David Thomas",
             "penerbit": "Addison-Wesley Professional",
             "tahun_terbit": "2019",
-            "stock": "7",
+            "stock": "6",
             "rak": "D1"
         }
     ]

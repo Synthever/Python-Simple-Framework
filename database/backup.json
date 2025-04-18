@@ -1,0 +1,68 @@
+{
+    "member": [
+        {
+            "id_member": 1,
+            "nama": "Dania Brigita Chandra Kirana",
+            "gender": "Perempuan",
+            "telp": "081234567890",
+            "alamat": "Kalasan",
+            "email": "daniabrigita25@students.amikom.ac.id"
+        },
+        {
+            "id_member": 2,
+            "nama": "Raekhandi Yoga Gusmawan",
+            "gender": "Laki-laki",
+            "telp": "085158338027",
+            "alamat": "Pandeyan, Yogyakarta",
+            "email": "rakha@students.amikom.ac.id"
+        },
+        {
+            "id_member": 3,
+            "nama": "Rizky Kurniawan",
+            "gender": "Laki-laki",
+            "telp": "081234567890",
+            "alamat": "Yogyakarta",
+            "email": "rizkyy@students.amikom.ac.id"
+        },
+        {
+            "id_member": 4,
+            "nama": "Sarah Putri Amalia",
+            "gender": "Perempuan",
+            "telp": "087654321098",
+            "alamat": "Sleman, Yogyakarta",
+            "email": "sarahputri@students.amikom.ac.id"
+        },
+        {
+            "id_member": 5,
+            "nama": "Ahmad Faisal",
+            "gender": "Laki-laki",
+            "telp": "089876543210",
+            "alamat": "Bantul, Yogyakarta",
+            "email": "ahmadfaisal@students.amikom.ac.id"
+        },
+        {
+            "id_member": 6,
+            "nama": "Maya Indah Lestari",
+            "gender": "Perempuan",
+            "telp": "082345678901",
+            "alamat": "Godean, Yogyakarta",
+            "email": "mayaindah@students.amikom.ac.id"
+        },
+        {
+            "id_member": 7,
+            "nama": "Budi Santoso",
+            "gender": "Laki-laki",
+            "telp": "083456789012",
+            "alamat": "Gamping, Yogyakarta",
+            "email": "budisantoso@students.amikom.ac.id"
+        },
+        {
+            "id_member": 8,
+            "nama": "Dewi Kusuma",
+            "gender": "Perempuan",
+            "telp": "084567890123",
+            "alamat": "Depok, Yogyakarta",
+            "email": "dewikusuma@students.amikom.ac.id"
+        }
+    ]
+}

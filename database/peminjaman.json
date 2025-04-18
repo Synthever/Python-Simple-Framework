@@ -47,8 +47,8 @@
             "id_petugas": 1,
             "tanggal_pinjam": "2024-12-20",
             "tanggal_kembali": "2024-12-27",
-            "status": "dipinjam",
-            "denda": 0
+            "status": "dikembalikan",
+            "denda": 10000
         },
         {
             "id_peminjaman": 6,
@@ -67,6 +67,16 @@
             "id_petugas": 1,
             "tanggal_pinjam": "2024-12-04",
             "tanggal_kembali": "2024-12-11",
+            "status": "dipinjam",
+            "denda": 0
+        },
+        {
+            "id_peminjaman": 8,
+            "id_buku": 16,
+            "id_member": 6,
+            "id_petugas": 1,
+            "tanggal_pinjam": "2024-12-23",
+            "tanggal_kembali": "2024-12-30",
             "status": "dipinjam",
             "denda": 0
         }
